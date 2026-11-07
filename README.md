@@ -2,7 +2,7 @@
 
 A full-stack product discovery app: **hybrid search** (BM25 + TF-IDF vectors + RRF) and a
 **hybrid recommender** (popularity, content-based, item-item CF, matrix factorization),
-with a persistent backend (auth, wishlist, cart, orders, admin) on **SQLite**.
+with a persistent cloud backend (auth, wishlist, cart, orders, admin) on **Supabase (PostgreSQL)**.
 Built with **zero runtime dependencies** — Node.js built-ins only.
 
 **Live:** https://shopsense-7djf.onrender.com
@@ -29,7 +29,7 @@ Built with **zero runtime dependencies** — Node.js built-ins only.
 |---|---|
 | Runtime | Node.js 22 (`node:http`, `node:sqlite`, `node:crypto`) — no npm dependencies |
 | Frontend | Vanilla JavaScript + HTML/CSS (no build step) |
-| Database | SQLite file `data/shopsense.db` |
+| Database | **Supabase Cloud PostgreSQL** (`https://nzccgolsbffelzdxtkom.supabase.co`) |
 | Tests | `node:test` (built-in) |
 
 ---
@@ -43,7 +43,7 @@ npm run db:reset # rebuild the database from the seed data
 npm run dev      # auto-reload
 ```
 
-Environment variables: `PORT`, `JWT_SECRET`, `SHOPSENSE_DB`.
+Environment variables: `PORT`, `JWT_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
 
 ---
 
@@ -83,19 +83,17 @@ Base: `/api`
 
 ---
 
-## Deploy on Render
+## Deploy on Render (Cloud Persistent via Supabase)
 
 Live: **https://shopsense-7djf.onrender.com**
 
-This is a long-running Node service with a SQLite file, so it needs a host that runs a
-process (static hosts like GitHub Pages and serverless platforms like Vercel/Firebase
-won't persist the database). The repo includes `render.yaml` and a `Dockerfile`.
+Backed by **Supabase PostgreSQL Cloud**, cart, orders, users, and interaction data persist
+indefinitely without needing paid persistent disks on Render. The repo includes `render.yaml`
+pre-configured with Supabase auto-deployment.
 
-1. Render → **New → Blueprint** → pick the repo (grant the Render GitHub App access to it).
-2. Render reads `render.yaml` → **Apply** → wait for **Live**.
-
-`render.yaml` uses the **free** plan by default. Uncomment the `SHOPSENSE_DB` + `disk:`
-lines in it for a persistent disk on a paid instance. Set `JWT_SECRET` in production.
+1. Render → **New → Blueprint** → pick this repo.
+2. Render automatically reads `render.yaml` and injects Supabase cloud configuration.
+3. Click **Apply** → wait for **Live**!
 
 ---
 

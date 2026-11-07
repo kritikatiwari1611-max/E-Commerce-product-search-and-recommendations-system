@@ -93,11 +93,12 @@ function serveStatic(res, pathname) {
 
 function main() {
   const store = createStore();
-  console.log("ShopSense starting...");
-  console.log(`  catalogue: ${store.products.length} products`);
-  console.log(`  users: ${store.users.length}, interactions: ${store.interactions.length}`);
-  console.log(`  curated lists: ${store.curatedLists.length}`);
-  console.log(`  search index: ${store.search.stats().vocabulary} terms`);
+  console.log("ShopSense starting with Supabase Cloud Database...");
+  console.log(`  database:   ${store.isSupabase ? `Supabase Cloud (${store.supabaseUrl})` : "Local"}`);
+  console.log(`  catalogue:  ${store.products.length} products`);
+  console.log(`  users:      ${store.users.length}, interactions: ${store.interactions.length}`);
+  console.log(`  curated:    ${store.curatedLists.length} lists`);
+  console.log(`  search:     ${store.search.stats().vocabulary} terms indexed`);
 
   const server = http.createServer((req, res) => {
     const url = new URL(req.url, `http://${req.headers.host || "localhost"}`);

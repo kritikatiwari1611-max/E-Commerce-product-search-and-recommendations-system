@@ -50,7 +50,7 @@ async function handleApi(req, res, url, store) {
 
   // GET /api/health
   if (pathname === "/api/health" && method === "GET") {
-    return sendJSON(res, 200, { ok: true, uptime: process.uptime(), products: store.products.length });
+    return sendJSON(res, 200, { ok: true, uptime: process.uptime(), products: store.products.length, database: store.isSupabase ? `Supabase Cloud (${store.supabaseUrl})` : "Local", supabase: store.isSupabase });
   }
 
   // GET /api/categories
